@@ -1,25 +1,37 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
-import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./Market.sol";
+import "./Pet.sol";
 
-contract Food is Context, ERC20 {
-    address _creator;
+contract Food is ERC20 {
+    Market private _market;
+
+    modifier onlyMarket() {
+        require(
+            _msgSender() == address(_market),
+            "Only market is allowed to perform this operation"
+        );
+        _;
+    }
 
     constructor() ERC20("Food", "FOOD") {
-        _creator = msg.sender;
+        _market = Market(_msgSender());
     }
 
-    function creator() external view returns (address) {
-        return _creator;
+    function market() public view returns (Market) {
+        return _market;
     }
 
-    function mint(address to, uint256 amount) external virtual {
-        require(_msgSender() == _creator,
-            "Only creator can mint new tokens"
-        );
+    function mint(address to, uint256 amount) external virtual onlyMarket {
         _mint(to, amount);
+    }
+
+    function feedPet(uint256 amount, uint256 petId) public returns (bool) {
+        require(amount >= 0.01 ether, "Cannot feed pet with less than 1 FOOD");
+        _burn(_msgSender(), amount);
+        _market.pet().feed(petId);
+        return true;
     }
 }

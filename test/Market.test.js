@@ -1,18 +1,23 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe('Food Token', async () => {
+describe('Market', async () => {
     let deployer, randomAcc;
     let MarketFactory, Market;
 
     beforeEach(async () => {
         [deployer, randomAcc] = await ethers.getSigners();
+
+        PetFactory = await ethers.getContractFactory('Pet');
+        Pet = await PetFactory.deploy();
+
         MarketFactory = await ethers.getContractFactory('Market');
-        Market = await MarketFactory.deploy();
+        Market = await MarketFactory.deploy(Pet.address);
     });
 
-    describe('Upon deployment', async () => {
+    describe.only('Upon deployment', async () => {
         it('should save food token', async () => {
+            console.log(Number(await Market.messageData({ data: 1 })));
             expect(await Market.foodToken()).to.not.equal('0x0000000000000000000000000000000000000000');
         });
     });

@@ -3,32 +3,30 @@ pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/utils/Context.sol";
 import "./Food.sol";
+import "./Pet.sol";
 
 contract Market is Context {
-    Food _foodToken;
+    Food private _food;
+    Pet private _pet;
 
     constructor() {
-        _setFoodToken();
+        _food = new Food();
+        _pet = new Pet();
     }
 
-    function _setFoodToken() private {
-        require(address(_foodToken) == address(0), "Token already set.");
-        _foodToken = new Food();
+    function token() public view returns (Food) {
+        return _food;
     }
 
-    function foodToken() external view returns (Food) {
-        return _foodToken;
+    function pet() public view returns (Pet) {
+        return _pet;
     }
 
-    function purchaseFoodToken() external payable {
-        require(
-            msg.value >= 0.01 ether,
-            "Cannot purchase less than 1 FOOD (1 FOOD = 0.01 ETH)."
-        );
-        _foodToken.mint(_msgSender(), ethFoodParse(msg.value));
+    function purchaseFood() external payable {
+        _food.mint(_msgSender(), _ethToFood(msg.value));
     }
 
-    function ethFoodParse(uint256 amountInEth) public pure returns (uint256) {
+    function _ethToFood(uint256 amountInEth) private pure returns (uint256) {
         return amountInEth * 100;
     }
 }
