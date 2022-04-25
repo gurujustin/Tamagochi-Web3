@@ -3,20 +3,22 @@ const { ethers } = require("hardhat");
 
 describe('Pet', () => {
     let deployer, randomAcc;
-    let PetFactory, Pet;
-    let FoodTokenFactory, FoodToken;
+    let Pet;
+    let FoodToken;
 
     beforeEach(async () => {
         [deployer, randomAcc] = await ethers.getSigners();
-        FoodTokenFactory = await ethers.getContractFactory('Food');
-        FoodToken = await FoodTokenFactory.deploy();
-        PetFactory = await ethers.getContractFactory('Pet');
-        Pet = await PetFactory.deploy(FoodToken.address);
+
+        MarketFactory = await ethers.getContractFactory('Market');
+        Market = await MarketFactory.deploy();
+
+        FoodToken = await ethers.getContractAt('Food', await Market.token());
+        Pet = await ethers.getContractAt('Pet', await Market.pet());
     });
 
     describe('Upon deployment', () => {
         it('should save food token', async () => {
-            expect(await Pet.foodToken()).to.equal(FoodToken.address);
+            expect(await Pet.food()).to.equal(FoodToken.address);
         });
     });
 });
