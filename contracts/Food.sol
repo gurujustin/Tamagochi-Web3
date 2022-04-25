@@ -24,14 +24,13 @@ contract Food is ERC20 {
         return _market;
     }
 
-    function mint(address to, uint256 amount) external virtual onlyMarket {
+    function mint(address to, uint256 amount) external onlyMarket {
         _mint(to, amount);
     }
 
-    function feedPet(uint256 amount, uint256 petId) public returns (bool) {
+    function feedPet(uint256 petId, uint256 amount) external {
         require(amount >= 0.01 ether, "Cannot feed pet with less than 1 FOOD");
         _burn(_msgSender(), amount);
         _market.pet().feed(petId);
-        return true;
     }
 }
