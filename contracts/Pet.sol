@@ -2,27 +2,28 @@
 pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "./Food.sol";
 import "./Market.sol";
 
 contract Pet is ERC721 {
-    Market private _market;
+    Food private _food;
     mapping(uint256 => uint256) private _starve;
     mapping(address => uint256[]) private _petsOf;
 
     modifier onlyToken() {
         require(
-            _msgSender() == address(_market.token()),
+            _msgSender() == address(_food),
             "Only token is allowed to perform this operation"
         );
         _;
     }
 
     constructor() ERC721("Pet", "PET") {
-        _market = Market(_msgSender());
+        _food = Market(_msgSender()).token();
     }
 
-    function market() public view returns (Market) {
-        return _market;
+    function food() public view returns (Food) {
+        return _food;
     }
 
     function petsOf(address owner) public view returns (uint256[] memory) {
