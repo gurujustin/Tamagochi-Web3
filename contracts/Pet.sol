@@ -18,8 +18,8 @@ contract Pet is ERC721 {
         _;
     }
 
-    constructor() ERC721("Pet", "PET") {
-        _food = Market(_msgSender()).token();
+    constructor(Food food_) ERC721("Pet", "PET") {
+        _food = food_;
     }
 
     function food() public view returns (Food) {

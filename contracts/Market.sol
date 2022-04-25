@@ -11,7 +11,7 @@ contract Market is Context {
 
     constructor() {
         _food = new Food();
-        _pet = new Pet();
+        _pet = new Pet(_food);
     }
 
     function token() public view returns (Food) {

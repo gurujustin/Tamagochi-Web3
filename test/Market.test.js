@@ -8,17 +8,19 @@ describe('Market', async () => {
     beforeEach(async () => {
         [deployer, randomAcc] = await ethers.getSigners();
 
-        PetFactory = await ethers.getContractFactory('Pet');
-        Pet = await PetFactory.deploy();
-
         MarketFactory = await ethers.getContractFactory('Market');
-        Market = await MarketFactory.deploy(Pet.address);
+        Market = await MarketFactory.deploy();
     });
 
     describe.only('Upon deployment', async () => {
-        it('should save food token', async () => {
-            console.log(Number(await Market.messageData({ data: 1 })));
-            expect(await Market.foodToken()).to.not.equal('0x0000000000000000000000000000000000000000');
+        it('should save food token instance', async () => {
+            console.log(await Market.token());
+            expect(await Market.token()).to.not.equal('0x0000000000000000000000000000000000000000');
+        });
+        
+        it('should save pet instance', async () => {
+            console.log(await Market.pet());
+            expect(await Market.pet()).to.not.equal('0x0000000000000000000000000000000000000000');
         });
     });
 

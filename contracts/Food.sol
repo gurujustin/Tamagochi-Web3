@@ -7,7 +7,6 @@ import "./Pet.sol";
 
 contract Food is ERC20 {
     Market private _market;
-    Pet private _pet;
 
     modifier onlyMarket() {
         require(
@@ -19,15 +18,10 @@ contract Food is ERC20 {
 
     constructor() ERC20("Food", "FOOD") {
         _market = Market(_msgSender());
-        _pet = _market.pet();
     }
 
     function market() public view returns (Market) {
         return _market;
-    }
-
-    function pet() public view returns (Pet) {
-        return _pet;
     }
 
     function mint(address to, uint256 amount) external onlyMarket {
@@ -37,6 +31,6 @@ contract Food is ERC20 {
     function feedPet(uint256 petId, uint256 amount) external {
         require(amount >= 0.01 ether, "Cannot feed pet with less than 1 FOOD");
         _burn(_msgSender(), amount);
-        _pet.feed(petId);
+        _market.pet().feed(petId);
     }
 }
