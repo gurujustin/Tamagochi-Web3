@@ -25,7 +25,7 @@ contract Pet is ERC721 {
         return _market;
     }
 
-    function petsOf(address owner) external view returns (uint256[] memory) {
+    function petsOf(address owner) public view returns (uint256[] memory) {
         return _petsOf[owner];
     }
 
@@ -36,7 +36,7 @@ contract Pet is ERC721 {
     }
 
     function feed(uint256 tokenId) external onlyToken {
-        require(_starve[tokenId] < block.timestamp, "Pet is death");
+        require(_starve[tokenId] > block.timestamp, "Pet is death");
         _starve[tokenId] = block.timestamp + 4 hours;
     }
 
