@@ -3,39 +3,77 @@ const { ethers } = require("hardhat");
 
 describe('Food Token', async () => {
     let deployer, randomAcc;
-    let FoodTokenFactory, FoodToken;
+    let MarketFactory, Market;
+    let FoodToken;
 
     beforeEach(async () => {
         [deployer, randomAcc] = await ethers.getSigners();
 
-        FoodTokenFactory = await ethers.getContractFactory('Food');
-        FoodToken = await FoodTokenFactory.deploy();
+        MarketFactory = await ethers.getContractFactory('Market');
+        Market = await MarketFactory.deploy();
+        FoodToken = await ethers.getContractAt('Food', await Market.token());
     });
 
     describe('Upon deployment', () => {
         it('should save market', async () => {
-            expect(await FoodToken.market()).to.equal(deployer.address);
+            expect(await FoodToken.market()).to.equal(Market.address);
         });
     });
 
     describe('Minting', () => {
-        it('should be restricted for creator-only (market-only)', async () => {
-            await FoodToken.connect(deployer).mint(deployer.address, 1);
-            expect(await FoodToken.balanceOf(deployer.address)).to.equal(1);
-        });
-
-        it('should revert when non-creator', () => {
+        it('should be restricted for market-only', () => {
             expect(FoodToken.connect(randomAcc).mint(randomAcc.address, 1))
                 .to.be.revertedWith('Only creator can mint new tokens');
         });
     });
 
     describe('Feeding', () => {
-        it('should revert if less than 1 FOOD', async () => {
-            const petId = 1;
-            expect(FoodToken.feedPet(petId, ethers.utils.parseEther('0.009')))
-                .to.be.revertedWith('Cannot feed pet with less than 1 FOOD');
+        let Pet;
+
+        beforeEach(async () => {
+            Pet = await ethers.getContractAt('Pet', await Market.pet());
+            Pet.mint('some pet name');
         });
+
+        it('should send pet exactly 1 FOOD token (0.01 ether)', async () => {
+            await eventManager(Pet, 'Transfer', async (_, _1, tokenId) => {
+                await Market.purchaseFood({
+                    value: ethers.utils.parseEther('0.01')
+                });
+
+                const beforeFeedBalance = await FoodToken.balanceOf(deployer.address);
+                await FoodToken.feedPet(tokenId);
+                const afterFeedBalance = await FoodToken.balanceOf(deployer.address);
+
+                return beforeFeedBalance
+                    .sub(afterFeedBalance)
+                    .eq(await Market.ethToFood(ethers.utils.parseEther('0.01')));
+            });
+        });
+
+        it('should burn tokens from msg.sender balance', async () => {
+            await eventManager(Pet, 'Transfer', async (_, _1, tokenId) => {
+                await Market.purchaseFood({
+                    value: ethers.utils.parseEther('0.01')
+                });
+
+                const beforeFeedBalance = await FoodToken.balanceOf(deployer.address);
+                await FoodToken.feedPet(tokenId);
+                const afterFeedBalance = await FoodToken.balanceOf(deployer.address);
+
+                return afterFeedBalance.lt(beforeFeedBalance);
+            });
+
+        });
+
+        async function eventManager(contract, eventTitle, callback) {
+            await new Promise((resolve, reject) => {
+                contract.once(eventTitle, async (...args) => {
+                    const success = await callback(...args);
+                    success ? resolve() : reject();
+                });
+            });
+        };
 
     });
 

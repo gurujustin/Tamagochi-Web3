@@ -23,28 +23,18 @@ describe('Market', async () => {
     });
 
     describe('Purchase', async () => {
-        it('should mint new tokens', async () => {
+        it('should mint new tokens in correct ratio (1:100)', async () => {
             await Market.purchaseFood({ value: ethers.utils.parseEther('0.01') });
             const FoodToken = await ethers.getContractAt('Food', await Market.token());
             expect(await FoodToken.totalSupply()).to.equal(ethers.utils.parseEther('1'));
         });
 
-        it('should mint new tokens in correct ratio (1:100)', async () => {
-            await Market.purchaseFood({ value: ethers.utils.parseEther('0.01') });
-            const FoodToken = await ethers.getContractAt('Food', await Market.token());
-            expect(await FoodToken.totalSupply()).to.equal(ethers.BigNumber.from(String(10 ** 18)));
-        });
-
-        it('should add the minted tokens to user balance', async () => {
+        it('should mint the tokens to user balance', async () => {
             await Market.connect(randomAcc).purchaseFood({ value: ethers.utils.parseEther('0.01') });
             const FoodToken = await ethers.getContractAt('Food', await Market.token());
             expect(await FoodToken.balanceOf(randomAcc.address)).to.equal(String(10 ** 18));
         });
 
-        it('should revert if not enough ETH sent', async () => {
-            expect(Market.connect(randomAcc).purchaseFood({ value: ethers.utils.parseEther('0.009') }))
-                .to.be.revertedWith('Cannot purchase less than 1 FOOD (1 FOOD = 0.01 ETH).');
-        });
     });
 
 });

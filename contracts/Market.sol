@@ -23,10 +23,10 @@ contract Market is Context {
     }
 
     function purchaseFood() external payable {
-        _food.mint(_msgSender(), _ethToFood(msg.value));
+        _food.mint(_msgSender(), ethToFood(msg.value));
     }
 
-    function _ethToFood(uint256 amountInEth) private pure returns (uint256) {
+    function ethToFood(uint256 amountInEth) public pure returns (uint256) {
         return amountInEth * 100;
     }
 }

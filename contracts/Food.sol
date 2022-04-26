@@ -3,7 +3,6 @@ pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./Market.sol";
-import "./Pet.sol";
 
 contract Food is ERC20 {
     Market private _market;
@@ -28,9 +27,8 @@ contract Food is ERC20 {
         _mint(to, amount);
     }
 
-    function feedPet(uint256 petId, uint256 amount) external {
-        require(amount >= 0.01 ether, "Cannot feed pet with less than 1 FOOD");
-        _burn(_msgSender(), amount);
+    function feedPet(uint256 petId) external {
+        _burn(_msgSender(), _market.ethToFood(0.01 ether));
         _market.pet().feed(petId);
     }
 }
