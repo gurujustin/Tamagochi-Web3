@@ -35,8 +35,8 @@ export default {
   background: rgb(2, 0, 36);
   background: linear-gradient(
     135deg,
-    rgba(2, 0, 36, 1) 15%,
-    rgb(49, 1, 43) 100%
+    rgb(3, 0, 54) 15%,
+    rgb(44, 0, 38) 100%
   );
   color: white;
   text-decoration: underline;

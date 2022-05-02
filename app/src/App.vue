@@ -2,7 +2,11 @@
   <div>
     <div id="backgroundImg"></div>
     <the-header />
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <transition name="route" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
     <the-footer />
   </div>
 </template>
@@ -159,6 +163,42 @@ body {
     rgba(174, 204, 255, 0.5) 0%,
     rgba(120, 108, 255, 0.5) 50%,
     rgba(255, 85, 234, 0.5) 100%
+  );
+}
+
+.route-enter-from {
+  opacity: 0;
+}
+.route-leave-to {
+  opacity: 0;
+}
+.route-enter-active {
+  transition: all 0.3s ease-out;
+}
+.route-leave-active {
+  transition: all 0.3s ease-in;
+}
+.route-enter-to,
+.route-leave-from {
+  opacity: 1;
+}
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 15px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(0, 0, 0);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, rgb(33, 0, 43) 0, rgb(60, 0, 60) 75%);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to right,
+    rgba(33, 0, 43, 0.75) 0,
+    rgba(60, 0, 60, 0.75) 75%
   );
 }
 </style>
