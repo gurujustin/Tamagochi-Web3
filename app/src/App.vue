@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <div id="backgroundImg"></div>
-    <the-header />
-  </div>
+  <div id="backgroundImg"></div>
+  <the-header />
+  <the-footer />
 </template>
 
 <style scoped>
