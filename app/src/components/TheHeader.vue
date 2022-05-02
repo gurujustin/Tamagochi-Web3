@@ -1,38 +1,44 @@
 <template>
-  <header :class="{ header: true, mobile: showMobileHeader && mobileMode }">
-    <router-link
+  <div>
+    <header :class="{ header: true, mobile: showMobileHeader && mobileMode }">
+      <router-link
+        @click="toggle"
+        :class="{ 'router-link': true, active: path == '/' }"
+        to="/"
+        ><span>Your Pets</span></router-link
+      >
+      <router-link
+        @click="toggle"
+        :class="{ 'router-link': true, active: path == '/mint/food' }"
+        to="/mint/food"
+        ><span>Buy $FOOD</span></router-link
+      >
+      <router-link
+        @click="toggle"
+        :class="{ 'router-link': true, active: path == '/mint/pet' }"
+        to="/mint/pet"
+        ><span>Create</span></router-link
+      >
+      <user-address class="userAddress" :userAddress="userAddress" />
+      <router-link v-if="!userAddress" class="router-link" to="/"
+        >Connect</router-link
+      >
+    </header>
+    <header
+      v-if="!showMobileHeader && mobileMode"
+      class="toggle"
       @click="toggle"
-      :class="{ 'router-link': true, active: path == '/' }"
-      to="/"
-      ><span>Your Pets</span></router-link
     >
-    <router-link
+      <div class="toggle-line"></div>
+      <div class="toggle-line"></div>
+      <div class="toggle-line"></div>
+    </header>
+    <div
+      class="backdrop"
       @click="toggle"
-      :class="{ 'router-link': true, active: path == '/mint/food' }"
-      to="/mint/food"
-      ><span>Buy $FOOD</span></router-link
-    >
-    <router-link
-      @click="toggle"
-      :class="{ 'router-link': true, active: path == '/mint/pet' }"
-      to="/mint/pet"
-      ><span>Create</span></router-link
-    >
-    <user-address class="userAddress" :userAddress="userAddress" />
-    <router-link v-if="!userAddress" class="router-link" to="/"
-      >Connect</router-link
-    >
-  </header>
-  <header v-if="!showMobileHeader && mobileMode" class="toggle" @click="toggle">
-    <div class="toggle-line"></div>
-    <div class="toggle-line"></div>
-    <div class="toggle-line"></div>
-  </header>
-  <div
-    class="backdrop"
-    @click="toggle"
-    v-if="showMobileHeader && mobileMode"
-  ></div>
+      v-if="showMobileHeader && mobileMode"
+    ></div>
+  </div>
 </template>
 
 <script>
@@ -71,10 +77,8 @@ export default {
   background: rgb(2, 0, 36);
   background: linear-gradient(
     135deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(2, 1, 43, 1) 20%,
-    rgba(91, 3, 80, 1) 50%,
-    rgba(107, 5, 5, 1) 100%
+    rgba(2, 0, 36, 1) 15%,
+    rgba(91, 3, 80, 1) 100%
   );
   position: fixed;
   top: 0;
@@ -87,6 +91,7 @@ export default {
   justify-content: space-evenly;
   padding: 1rem 0;
   box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.75);
+  z-index: 1000;
 }
 
 .router-link {
@@ -140,16 +145,20 @@ export default {
 
   .mobile {
     display: flex;
+    justify-content: center;
     flex-direction: column;
-    width: 90vw;
+    width: 65vw;
+    left: calc(50% - 17.5vw);
     background: rgb(58, 0, 58);
-    z-index: 1;
+    box-shadow: 0 0 25px 20px rgb(0, 0, 0);
+    z-index: 1001;
+    height: 100vh;
   }
 
   .router-link {
     font-size: 1.6rem;
-    text-shadow: 1px 1px black;
-    padding: 0.5rem 0;
+    text-shadow: 2px 2px black;
+    padding: 2rem 0;
   }
 
   .router-link span {
@@ -168,8 +177,9 @@ export default {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgb(0, 0, 0, 0.15);
+    background-color: rgb(0, 0, 0, 0.5);
     cursor: pointer;
+    z-index: 10;
   }
 }
 </style>

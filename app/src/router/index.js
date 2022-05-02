@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import YourPets from '../views/YourPets.vue';
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'home',
-  //   component: HomeView
-  // },
+  {
+    path: '/',
+    name: 'YourPets',
+    component: YourPets
+  },
   // {
   //   path: '/about',
   //   name: 'about',

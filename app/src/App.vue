@@ -1,10 +1,13 @@
 <template>
-  <div id="backgroundImg"></div>
-  <the-header />
-  <the-footer />
+  <div>
+    <div id="backgroundImg"></div>
+    <the-header />
+    <router-view />
+    <the-footer />
+  </div>
 </template>
 
-<style scoped>
+<style>
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -137,6 +140,12 @@ table {
 }
 
 /* End of reset */
+body {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0);
+  overflow-x: hidden;
+}
 
 #backgroundImg {
   width: 100vw;
@@ -144,6 +153,12 @@ table {
   position: fixed;
   top: 0;
   left: 0;
-  background: rgb(213, 176, 255);
+  background: rgb(174, 204, 255);
+  background: linear-gradient(
+    135deg,
+    rgba(174, 204, 255, 0.5) 0%,
+    rgba(120, 108, 255, 0.5) 50%,
+    rgba(255, 85, 234, 0.5) 100%
+  );
 }
 </style>
