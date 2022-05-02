@@ -26,7 +26,7 @@
     >
   </header>
   <header
-    v-if="!showMobileHeader && windowWidth < 648"
+    v-if="!showMobileHeader && mobileMode"
     class="toggle"
     @click="toggle"
   >
@@ -37,7 +37,7 @@
   <div
     class="backdrop"
     @click="toggle"
-    v-if="showMobileHeader && windowWidth < 648"
+    v-if="showMobileHeader && mobileMode"
   ></div>
 </template>
 
@@ -49,8 +49,7 @@ export default {
   data() {
     return {
       userAddress: "0xeb76da1a8a49673be0922645205c78d993a86758",
-      windowWidth: window.innerWidth < 648,
-      mobileMode: false,
+      mobileMode: window.innerWidth < 648,
       showMobileHeader: false,
     };
   },
