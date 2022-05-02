@@ -1,7 +1,5 @@
 <template>
-  <header
-    :class="{ header: true, mobile: showMobileHeader && mobileMode }"
-  >
+  <header :class="{ header: true, mobile: showMobileHeader && mobileMode }">
     <router-link
       @click="toggle"
       :class="{ 'router-link': true, active: path == '/' }"
@@ -25,11 +23,7 @@
       >Connect</router-link
     >
   </header>
-  <header
-    v-if="!showMobileHeader && mobileMode"
-    class="toggle"
-    @click="toggle"
-  >
+  <header v-if="!showMobileHeader && mobileMode" class="toggle" @click="toggle">
     <div class="toggle-line"></div>
     <div class="toggle-line"></div>
     <div class="toggle-line"></div>
@@ -84,20 +78,22 @@ export default {
   );
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42rem;
+  border-radius: 0 0 2rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   padding: 1rem 0;
-  box-shadow: 0 -2px 2px 5px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.75);
 }
 
 .router-link {
   text-decoration: none;
   color: rgb(200, 200, 200);
   text-shadow: 2px 2px black;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
 }
 
 .toggle,
@@ -110,7 +106,7 @@ export default {
   color: white;
 }
 
-@media only screen and (max-width: 648px) {
+@media only screen and (max-width: 672px) {
   .header {
     display: none;
   }
@@ -145,12 +141,13 @@ export default {
   .mobile {
     display: flex;
     flex-direction: column;
+    width: 90vw;
     background: rgb(58, 0, 58);
     z-index: 1;
   }
 
   .router-link {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     text-shadow: 1px 1px black;
     padding: 0.5rem 0;
   }

@@ -11,12 +11,12 @@ export default {
 <style scoped>
 .userAddress {
   color: white;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   text-align: center;
   text-shadow: 2px 2px black;
   border: none;
   border-radius: 2rem;
-  max-width: 8rem;
+  max-width: 6rem;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0.4rem 0.6rem 0.4rem 0.8rem;

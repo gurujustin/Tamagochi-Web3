@@ -1,0 +1,13 @@
+[debug] [2022-05-02T13:28:14.662Z] ----------------------------------------------------------------------
+[debug] [2022-05-02T13:28:14.665Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\home\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2022-05-02T13:28:14.666Z] CLI Version:   10.6.0
+[debug] [2022-05-02T13:28:14.666Z] Platform:      win32
+[debug] [2022-05-02T13:28:14.666Z] Node Version:  v16.14.2
+[debug] [2022-05-02T13:28:14.667Z] Time:          Mon May 02 2022 16:28:14 GMT+0300 (Източноевропейско лятно часово време)
+[debug] [2022-05-02T13:28:14.668Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-05-02T13:28:14.738Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-05-02T13:28:14.738Z] > authorizing via signed-in user (georgingeorgiev7@gmail.com)
+[debug] [2022-05-02T13:28:14.738Z] [iam] checking project tamagochi-web3 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-05-02T13:28:14.740Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/tamagochi-web3:testIamPermissions [none]
+[debug] [2022-05-02T13:28:14.741Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/tamagochi-web3:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}

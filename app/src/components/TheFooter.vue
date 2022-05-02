@@ -31,6 +31,8 @@ export default {
   background-color: rgb(0, 0, 31);
   color: white;
   text-decoration: underline;
+  padding: 0.2rem 0;
+  box-shadow: 0 0 5px 4px rgb(0, 0, 31);
 }
 
 .footer-link {
