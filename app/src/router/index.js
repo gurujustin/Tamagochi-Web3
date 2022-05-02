@@ -7,11 +7,11 @@ const routes = [
     name: 'YourPets',
     component: YourPets
   },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  // }
+  {
+    path: '/mint/food',
+    name: 'MintFood',
+    component: () => import(/* webpackChunkName: "MintFood" */ '../views/MintFood.vue')
+  }
 ];
 
 const router = createRouter({

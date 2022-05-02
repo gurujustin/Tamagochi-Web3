@@ -147,8 +147,8 @@ export default {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    width: 65vw;
-    left: calc(50% - 17.5vw);
+    width: 85vw;
+    left: calc(50% - 7.5vw);
     background: rgb(58, 0, 58);
     box-shadow: 0 0 25px 20px rgb(0, 0, 0);
     z-index: 1001;
