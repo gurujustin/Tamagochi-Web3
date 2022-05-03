@@ -11,6 +11,11 @@ const routes = [
     path: '/mint/food',
     name: 'MintFood',
     component: () => import(/* webpackChunkName: "MintFood" */ '../views/MintFood.vue')
+  },
+  {
+    path: '/mint/pet',
+    name: 'MintPet',
+    component: () => import(/* webpackChunkName: "MintPet" */ '../views/MintPet.vue')
   }
 ];
 

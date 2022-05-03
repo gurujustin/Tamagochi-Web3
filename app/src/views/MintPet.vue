@@ -1,11 +1,16 @@
 <template>
   <form class="form" @submit="purchase">
     <label class="form-label" for="amount"
-      >Amount of <span @click="etherscanFOOD" class="FOOD">$FOOD</span>:</label
+      >Image of your
+      <span @click="etherscanFOOD" class="FOOD">Pet</span>:</label
     >
-    <input class="form-input" type="number" v-model.number="amount" min="0" />
-    <div class="form-message">FOOD:ETH ratio = 100:1</div>
-    <button class="form-button" type="submit">Buy</button>
+    <div @click="pickImage" class="form-input">
+      Pick
+      <input ref="inputElement" type="file" @change="imagePickedHandler" />
+    </div>
+    <div v-if="image" class="form-message imageName">{{ image.name }}</div>
+    <div v-if="errorMessage" class="form-message error">{{ errorMessage }}</div>
+    <button v-if="image" class="form-button" type="submit">Mint</button>
   </form>
 </template>
 
@@ -13,7 +18,8 @@
 export default {
   data() {
     return {
-      amount: 0,
+      errorMessage: "",
+      image: null,
     };
   },
   methods: {
@@ -25,6 +31,19 @@ export default {
         "https://ropsten.etherscan.io/address/0xf908726Eb810F12a812d1D2013C707bb73959545",
         "_blank"
       );
+    },
+    pickImage() {
+      this.$refs.inputElement.dispatchEvent(new MouseEvent("click"));
+    },
+    imagePickedHandler({ target }) {
+      const uploadedFile = target.files[0];
+      if (!uploadedFile.type.startsWith("image")) {
+        this.image = null;
+        this.errorMessage = "Invalid file type! Please upload a image file";
+        return;
+      }
+      this.image = uploadedFile;
+      this.errorMessage = "";
     },
   },
 };
@@ -70,10 +89,13 @@ export default {
 }
 
 .form-input {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: white;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 20%;
+  height: 1.5rem;
   background-color: rgba(0, 0, 0, 0.6);
   border: none;
   border-radius: 10rem;
@@ -82,7 +104,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.6);
-  cursor: default;
+  cursor: pointer;
   transition: all 0.25s ease-in-out;
 }
 
@@ -90,10 +112,14 @@ export default {
   width: 18%;
 }
 
+.form-input input {
+  display: none;
+}
+
 .form-message {
   font-size: 0.6rem;
   font-family: sans-serif;
-  color: rgb(228, 228, 228);
+  color: rgb(255, 255, 255);
   text-shadow: 1px 1px black;
   transform: translateY(-2px);
   transition: all 0.25s ease-in-out;
@@ -101,6 +127,10 @@ export default {
 
 .form-message:hover {
   font-size: 0.65rem;
+}
+
+.error {
+  color: rgb(255, 0, 0);
 }
 
 .form-button {
