@@ -25,7 +25,7 @@ export default {
 .pets {
   position: absolute;
   padding: 0 2rem;
-  top: 25%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
   padding-bottom: 5rem;
