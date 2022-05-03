@@ -2,37 +2,48 @@
   <div>
     <header :class="{ header: true, mobile: showMobileHeader && mobileMode }">
       <router-link
-        v-if="userAddress"
+        v-if="userAddressIsValid && chainIdIsValid"
         @click="toggle"
         :class="{ 'router-link': true, active: path == '/' }"
         to="/"
         ><span>Your Pets</span></router-link
       >
       <router-link
-        v-if="userAddress"
+        v-if="userAddressIsValid && chainIdIsValid"
         @click="toggle"
         :class="{ 'router-link': true, active: path == '/mint/food' }"
         to="/mint/food"
         ><span>Buy $FOOD</span></router-link
       >
       <router-link
-        v-if="userAddress"
+        v-if="userAddressIsValid && chainIdIsValid"
         @click="toggle"
         :class="{ 'router-link': true, active: path == '/mint/pet' }"
         to="/mint/pet"
         ><span>Create</span></router-link
       >
       <user-address
-        v-if="userAddress"
-        class="userAddress"
+        v-if="userAddressIsValid && chainIdIsValid"
         :userAddress="userAddress"
       />
       <user-address
-        v-else
-        class="connectMetamask"
-        @click="connectMetamask"
-        userAddress="Connect"
+        v-else-if="userAddressIsValid && !chainIdIsValid"
+        userAddress="Switch to Ropsten"
       />
+      <div v-else>
+        <user-address
+          v-if="hasMetamask"
+          class="connectMetamask"
+          @click="connectMetamask"
+          userAddress="Connect"
+        />
+        <user-address
+          v-else
+          class="connectMetamask"
+          @click="redirectToMetamaskPage"
+          userAddress="Install"
+        />
+      </div>
     </header>
     <header
       v-if="!showMobileHeader && mobileMode"
@@ -74,7 +85,14 @@ export default {
       this.showMobileHeader = !this.showMobileHeader;
     },
     async connectMetamask() {
+      await this.$store.getters.provider.send("eth_requestAccounts", []);
       await this.$store.dispatch("setupMetamask");
+    },
+    redirectToMetamaskPage() {
+      window.open(
+        "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
+        "_blank"
+      );
     },
   },
   computed: {
@@ -83,6 +101,18 @@ export default {
     },
     userAddress() {
       return this.$store.getters.userAddress;
+    },
+    chainId() {
+      return this.$store.getters.chainId;
+    },
+    userAddressIsValid() {
+      return this.userAddress?.length === 42;
+    },
+    chainIdIsValid() {
+      return this.chainId === 3;
+    },
+    hasMetamask() {
+      return !!window.ethereum;
     },
   },
 };

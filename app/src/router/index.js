@@ -36,18 +36,17 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  if (to.name === 'NotFound' || to.name === 'ConnectMetamask') next();
-  else {
-    const connected = (await store.getters.provider?.listAccounts()).length > 0;
-    if (connected) await store.dispatch('setupMetamask');
-    if (store.getters.chainId === 3 &&
-      store.getters.userAddress !== null) {
-      next();
-    } else {
-      next({ name: 'ConnectMetamask' });
-    }
+  await store.dispatch('setupMetamask');
+  console.log(store.getters.chainId);
+  console.log(store.getters.userAddress);
+  if (store.getters.chainId === 3 &&
+    store.getters.userAddress?.length === 42 || to.name === 'NotFound' || to.name === 'ConnectMetamask') {
+    next();
+  } else if (store.getters.chainId !== 3) {
+    next({ name: 'NotFound' });
+  } else {
+    next({ name: 'ConnectMetamask' });
   }
-
 });
 
 export default router;

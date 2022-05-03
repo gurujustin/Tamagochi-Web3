@@ -5,7 +5,6 @@
 <script>
 export default {
   created() {
-    console.log("asfasf");
   },
 };
 </script>
