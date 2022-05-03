@@ -37,12 +37,10 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   await store.dispatch('setupMetamask');
-  console.log(store.getters.chainId);
-  console.log(store.getters.userAddress);
   if (store.getters.chainId === 3 &&
     store.getters.userAddress?.length === 42 || to.name === 'NotFound' || to.name === 'ConnectMetamask') {
     next();
-  } else if (store.getters.chainId !== 3) {
+  } else if (store.getters.chainId !== 3 && store.getters.chainId !== null) {
     next({ name: 'NotFound' });
   } else {
     next({ name: 'ConnectMetamask' });
