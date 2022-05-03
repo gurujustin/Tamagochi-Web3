@@ -17,6 +17,16 @@ const routes = [
     path: '/mint/pet',
     name: 'MintPet',
     component: () => import(/* webpackChunkName: "MintPet" */ '../views/MintPet.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import(/* webpackChunkName: "NotFound" */ '../views/NotFound.vue')
+  },
+  {
+    path: '/connect',
+    name: 'ConnectMetamask',
+    component: () => import(/* webpackChunkName: "ConnectMetamask" */ '../views/ConnectMetamask.vue')
   }
 ];
 
@@ -26,14 +36,18 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const connected = (await store.getters.provider?.listAccounts()).length > 0;
-  if (connected) await store.dispatch('setupMetamask');
-  if (store.getters.chainId === 3 &&
-    store.getters.userAddress !== null) {
-    next();
-  } else {
-    next({ name: 'NotFound' });
+  if (to.name === 'NotFound' || to.name === 'ConnectMetamask') next();
+  else {
+    const connected = (await store.getters.provider?.listAccounts()).length > 0;
+    if (connected) await store.dispatch('setupMetamask');
+    if (store.getters.chainId === 3 &&
+      store.getters.userAddress !== null) {
+      next();
+    } else {
+      next({ name: 'ConnectMetamask' });
+    }
   }
+
 });
 
 export default router;

@@ -63,9 +63,6 @@ export default {
       showMobileHeader: false,
     };
   },
-  created() {
-    // if ()
-  },
   mounted() {
     window.addEventListener("resize", () => {
       this.mobileMode = window.innerWidth < 648;
