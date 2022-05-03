@@ -2,27 +2,37 @@
   <div>
     <header :class="{ header: true, mobile: showMobileHeader && mobileMode }">
       <router-link
+        v-if="userAddress"
         @click="toggle"
         :class="{ 'router-link': true, active: path == '/' }"
         to="/"
         ><span>Your Pets</span></router-link
       >
       <router-link
+        v-if="userAddress"
         @click="toggle"
         :class="{ 'router-link': true, active: path == '/mint/food' }"
         to="/mint/food"
         ><span>Buy $FOOD</span></router-link
       >
       <router-link
+        v-if="userAddress"
         @click="toggle"
         :class="{ 'router-link': true, active: path == '/mint/pet' }"
         to="/mint/pet"
         ><span>Create</span></router-link
       >
-      <user-address class="userAddress" :userAddress="userAddress" />
-      <router-link v-if="!userAddress" class="router-link" to="/"
-        >Connect</router-link
-      >
+      <user-address
+        v-if="userAddress"
+        class="userAddress"
+        :userAddress="userAddress"
+      />
+      <user-address
+        v-else
+        class="connectMetamask"
+        @click="connectMetamask"
+        userAddress="Connect"
+      />
     </header>
     <header
       v-if="!showMobileHeader && mobileMode"
@@ -43,15 +53,18 @@
 
 <script>
 import UserAddress from "./UserAddress.vue";
+// import { ethers } from "ethers";
 
 export default {
   components: { UserAddress },
   data() {
     return {
-      userAddress: "0xeb76da1a8a49673be0922645205c78d993a86758",
       mobileMode: window.innerWidth < 648,
       showMobileHeader: false,
     };
+  },
+  created() {
+    // if ()
   },
   mounted() {
     window.addEventListener("resize", () => {
@@ -63,10 +76,16 @@ export default {
       if (!this.mobileMode) return;
       this.showMobileHeader = !this.showMobileHeader;
     },
+    async connectMetamask() {
+      await this.$store.dispatch("setupMetamask");
+    },
   },
   computed: {
     path() {
       return this.$route.path;
+    },
+    userAddress() {
+      return this.$store.getters.userAddress;
     },
   },
 };
@@ -75,11 +94,7 @@ export default {
 <style scoped>
 .header {
   background: rgb(2, 0, 36);
-  background: linear-gradient(
-    135deg,
-    rgb(3, 0, 54) 15%,
-    rgb(56, 0, 49) 100%
-  );
+  background: linear-gradient(135deg, rgb(3, 0, 54) 15%, rgb(56, 0, 49) 100%);
   position: fixed;
   top: 0;
   left: 50%;
@@ -109,6 +124,10 @@ export default {
 
 .active {
   color: white;
+}
+
+.connectMetamask {
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 672px) {

@@ -11,7 +11,7 @@ export default {
 <style scoped>
 .userAddress {
   color: white;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   text-align: center;
   text-shadow: 2px 2px black;
   border: none;
