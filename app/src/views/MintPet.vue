@@ -10,7 +10,14 @@
     </div>
     <div v-if="image" class="form-message imageName">{{ image.name }}</div>
     <div v-if="errorMessage" class="form-message error">{{ errorMessage }}</div>
-    <button v-if="image" class="form-button" type="submit">Mint</button>
+    <button
+      v-if="image"
+      @click="uploadImageToIPFS"
+      class="form-button"
+      type="submit"
+    >
+      Mint
+    </button>
   </form>
 </template>
 
@@ -44,6 +51,11 @@ export default {
       }
       this.image = uploadedFile;
       this.errorMessage = "";
+    },
+    async _uploadImageToIPFS() {
+      const hash = (await this.$store.getters.ipfs.add(this.image)).path;
+      console.log("https://ipfs.io/ipfs/" + hash);
+      // ToDo: Mint real pet erc721
     },
   },
 };

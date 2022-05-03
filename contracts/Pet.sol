@@ -9,6 +9,7 @@ contract Pet is ERC721 {
     Food private _food;
     mapping(uint256 => uint256) private _starve;
     mapping(address => uint256[]) private _petsOf;
+    mapping(uint256 => string) private _images;
 
     modifier onlyToken() {
         require(
@@ -28,6 +29,10 @@ contract Pet is ERC721 {
 
     function petsOf(address owner) public view returns (uint256[] memory) {
         return _petsOf[owner];
+    }
+
+    function imageOf(uint256 tokenId) public view returns (string memory) {
+        return _images[tokenId];
     }
 
     function mint(string memory petName) external {

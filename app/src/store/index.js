@@ -1,12 +1,14 @@
 import { createStore } from 'vuex';
 import { ethers } from 'ethers';
 import router from '../router';
+import { create } from "ipfs-http-client";
 
 const store = createStore({
   state: {
     userAddress: null,
     chainId: null,
-    provider: window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : null
+    provider: window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : null,
+    ipfs: create("https://ipfs.infura.io:5001/api/v0")
   },
   mutations: {
     userAddress(state, userAddress) {
@@ -20,6 +22,7 @@ const store = createStore({
     userAddress: (state) => state.userAddress,
     chainId: (state) => state.chainId,
     provider: (state) => state.provider,
+    ipfs: (state) => state.ipfs,
   },
   actions: {
     async setupMetamask({ getters, commit }) {
