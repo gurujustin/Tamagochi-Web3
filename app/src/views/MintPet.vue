@@ -1,24 +1,29 @@
 <template>
-  <form class="form" @submit="purchase">
-    <label class="form-label" for="amount"
-      >Image of your
-      <span @click="etherscanFOOD" class="FOOD">Pet</span>:</label
-    >
-    <div @click="pickImage" class="form-input">
-      Pick
-      <input ref="inputElement" type="file" @change="imagePickedHandler" />
-    </div>
-    <div v-if="image" class="form-message imageName">{{ image.name }}</div>
-    <div v-if="errorMessage" class="form-message error">{{ errorMessage }}</div>
-    <button
-      v-if="image"
-      @click="uploadImageToIPFS"
-      class="form-button"
-      type="submit"
-    >
-      Mint
-    </button>
-  </form>
+  <div>
+    <form class="form" @submit="purchase">
+      <label class="form-label" for="amount"
+        >Image of your
+        <span @click="etherscanFOOD" class="FOOD">Pet</span>:</label
+      >
+      <div @click="pickImage" class="form-input">
+        Pick
+        <input ref="inputElement" type="file" @change="imagePickedHandler" />
+      </div>
+      <div v-if="image" class="form-message imageName">{{ image.name }}</div>
+      <div v-if="errorMessage" class="form-message error">
+        {{ errorMessage }}
+      </div>
+      <button
+        v-if="image"
+        @click="_uploadImageToIPFS"
+        class="form-button"
+        type="submit"
+      >
+        Mint
+      </button>
+    </form>
+    <the-loader v-if="loading" />
+  </div>
 </template>
 
 <script>
@@ -27,6 +32,7 @@ export default {
     return {
       errorMessage: "",
       image: null,
+      loading: false,
     };
   },
   methods: {
@@ -53,8 +59,11 @@ export default {
       this.errorMessage = "";
     },
     async _uploadImageToIPFS() {
+      this.loading = true;
       const hash = (await this.$store.getters.ipfs.add(this.image)).path;
+      this.loading = false;
       console.log("https://ipfs.io/ipfs/" + hash);
+      this.$router.push("/");
       // ToDo: Mint real pet erc721
     },
   },
