@@ -1,6 +1,9 @@
 <template>
   <div class="card">
-    <img class="card-image" :src="imageUrl" />
+    <div
+      class="card-image"
+      :style="{ 'background-image': `url(${imageUrl})` }"
+    />
     <div class="card-options">
       <button class="card-options-feed">Feed</button>
       <div class="card-options-timer">03:59:59</div>
@@ -26,6 +29,8 @@ export default {
 }
 
 .card-image {
+  background-repeat: no-repeat;
+  background-size: cover;
   height: 80%;
 }
 

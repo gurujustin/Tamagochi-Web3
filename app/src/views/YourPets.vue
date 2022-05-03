@@ -8,7 +8,7 @@
       imageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1tkcBVGQFXZf2SlHJY5l5dDTllQUKllrSxg&usqp=CAU"
        class="tamagochi-card" />
     <tamagochi-card
-      imageUrl="https://www.thesprucepets.com/thmb/JPj64QXhXciiXesjdQ_4liIKJD4=/4224x3168/smart/filters:no_upscale()/pet-parrot-on-human-hand-1022424278-5c3ded0ac9e77c00016e6e2b.jpg"
+      imageUrl="https://images-na.ssl-images-amazon.com/images/I/81RfjOhvMrL.png"
        class="tamagochi-card" />
   </div>
 </template>
