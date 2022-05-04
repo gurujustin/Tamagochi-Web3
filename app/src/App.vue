@@ -11,6 +11,30 @@
   </div>
 </template>
 
+<script>
+import { ethers } from "ethers";
+import MarketData from "./contracts/Market";
+import FoodData from "./contracts/Food";
+import PetData from "./contracts/Pet";
+
+export default {
+  async created() {
+    await this.$store.dispatch("setupMetamask");
+    const signer = this.$store.getters.provider.getSigner(
+      this.$store.getters.userAddress
+    );
+
+    const Market = new ethers.Contract(MarketData.address, MarketData.abi);
+    const Food = new ethers.Contract(await Market.token(), FoodData.abi);
+    const Pet = new ethers.Contract(await Market.pet(), PetData.abi);
+
+    Market.connect(signer);
+    Food.connect(signer);
+    Pet.connect(signer);
+  },
+};
+</script>
+
 <style>
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126

@@ -8,7 +8,10 @@ const store = createStore({
     userAddress: null,
     chainId: null,
     provider: window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : null,
-    ipfs: create("https://ipfs.infura.io:5001/api/v0")
+    ipfs: create("https://ipfs.infura.io:5001/api/v0"),
+    MarketContract: null,
+    FoodContract: null,
+    PetContract: null
   },
   mutations: {
     userAddress(state, userAddress) {
@@ -17,12 +20,24 @@ const store = createStore({
     chainId(state, chainId) {
       state.chainId = chainId;
     },
+    MarketContract(state, MarketContract) {
+      state.MarketContract = MarketContract;
+    },
+    FoodContract(state, FoodContract) {
+      state.FoodContract = FoodContract;
+    },
+    PetContract(state, PetContract) {
+      state.PetContract = PetContract;
+    },
   },
   getters: {
     userAddress: (state) => state.userAddress,
     chainId: (state) => state.chainId,
     provider: (state) => state.provider,
     ipfs: (state) => state.ipfs,
+    MarketContract: (state) => state.MarketContract,
+    FoodContract: (state) => state.FoodContract,
+    PetContract: (state) => state.PetContract,
   },
   actions: {
     async setupMetamask({ getters, commit }) {
@@ -47,6 +62,11 @@ const store = createStore({
         if (!_accounts[0]) location.reload();
         else router.push('/');
       });
+    },
+    setupContracts({ commit }, contracts) {
+      commit('MarketContract', contracts.MarketContract);
+      commit('FoodContract', contracts.FoodContract);
+      commit('PetContract', contracts.PetContract);
     }
   }
 });

@@ -2,14 +2,6 @@
   <div class="view">404 :(</div>
 </template>
 
-<script>
-export default {
-  created() {
-    console.log("asfasf");
-  },
-};
-</script>
-
 <style scoped>
 .view {
   position: absolute;
