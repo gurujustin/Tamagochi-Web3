@@ -87,6 +87,7 @@ export default {
     async connectMetamask() {
       await this.$store.getters.provider.send("eth_requestAccounts", []);
       await this.$store.dispatch("setupMetamask");
+      this.$router.push("/");
     },
     redirectToMetamaskPage() {
       window.open(

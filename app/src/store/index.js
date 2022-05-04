@@ -35,8 +35,12 @@ const store = createStore({
       commit("userAddress", await signer.getAddress());
       commit("chainId", parseInt(await window.ethereum.request({ method: 'eth_chainId' })));
       window.ethereum.on("chainChanged", async (_chainId) => {
-        commit('chainId', _chainId);
-        router.push('/');
+        const id = parseInt(_chainId, 16);
+        commit('chainId', id);
+
+        id === 3
+          ? router.push('/')
+          : router.push({ name: 'NotFound' });
       });
       window.ethereum.on("accountsChanged", async (_accounts) => {
         commit('userAddress', _accounts[0]);

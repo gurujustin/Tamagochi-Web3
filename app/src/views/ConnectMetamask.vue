@@ -1,11 +1,12 @@
 <template>
-  <div class="view">Click the button in the heading :)</div>
+  <div>
+    <div class="view">Click the button in the heading :)</div>
+  </div>
 </template>
 
 <script>
 export default {
-  created() {
-  },
+  created() {},
 };
 </script>
 
