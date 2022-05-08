@@ -6,24 +6,16 @@ import "./Food.sol";
 import "./Pet.sol";
 
 contract Market is Context {
-    Food private _food;
-    Pet private _pet;
+    Food public token;
+    Pet public pet;
 
     constructor() {
-        _food = new Food();
-        _pet = new Pet(_food);
-    }
-
-    function token() public view returns (Food) {
-        return _food;
-    }
-
-    function pet() public view returns (Pet) {
-        return _pet;
+        token = new Food();
+        pet = new Pet(token);
     }
 
     function purchaseFood() external payable {
-        _food.mint(_msgSender(), ethToFood(msg.value));
+        token.mint(_msgSender(), ethToFood(msg.value));
     }
 
     function ethToFood(uint256 amountInEth) public pure returns (uint256) {
