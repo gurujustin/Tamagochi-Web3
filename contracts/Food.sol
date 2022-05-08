@@ -28,7 +28,7 @@ contract Food is ERC20 {
     }
 
     function feedPet(uint256 petId) external {
-        _burn(_msgSender(), _market.ethToFood(0.01 ether));
+        _burn(_msgSender(), 10 ** 18);
         _market.pet().feed(petId);
     }
 }
