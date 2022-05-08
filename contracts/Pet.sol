@@ -35,9 +35,10 @@ contract Pet is ERC721 {
         return _images[tokenId];
     }
 
-    function mint(string memory petName) external {
-        uint256 tokenId = getTokenId(msg.sender, petName);
+    function mint(string memory imageUrl) external {
+        uint256 tokenId = getTokenId(msg.sender, imageUrl);
         _safeMint(_msgSender(), tokenId);
+        _images[tokenId] = imageUrl;
         _starve[tokenId] = block.timestamp + 4 hours;
     }
 
@@ -46,11 +47,11 @@ contract Pet is ERC721 {
         _starve[tokenId] = block.timestamp + 4 hours;
     }
 
-    function getTokenId(address owner, string memory petName)
+    function getTokenId(address owner, string memory imageUrl)
         public
         pure
         returns (uint256)
     {
-        return uint256(keccak256(abi.encodePacked(owner, petName)));
+        return uint256(keccak256(abi.encodePacked(owner, imageUrl)));
     }
 }
