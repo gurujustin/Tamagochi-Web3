@@ -8,7 +8,7 @@ contract Pet is ERC721 {
     Food public food;
     mapping(uint256 => uint256) public starve;
     mapping(address => uint256[]) public petsOf;
-    mapping(uint256 => string) public imageOf;
+    mapping(uint256 => string) private _tokenURIs;
 
     modifier onlyToken() {
         require(
@@ -22,10 +22,10 @@ contract Pet is ERC721 {
         food = _food;
     }
 
-    function mint(string memory imageUrl) external {
-        uint256 tokenId = getTokenId(msg.sender, imageUrl);
+    function mint(string memory _tokenURI) external {
+        uint256 tokenId = getTokenId(msg.sender, _tokenURI);
         _safeMint(_msgSender(), tokenId);
-        imageOf[tokenId] = imageUrl;
+        _tokenURIs[tokenId] = _tokenURI;
         starve[tokenId] = block.timestamp + 4 hours;
     }
 
