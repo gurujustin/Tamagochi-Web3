@@ -9,7 +9,11 @@ module.exports = {
   networks: {
     ropsten: {
       url: `https://ropsten.infura.io/v3/0dc62080d95a458fbcd7bd0e28a1a95d`,
-      accounts: [process.env.ROPSTEN_KEY]
+      accounts: [process.env.PRIVATE_KEY]
+    },
+    mumbai: {
+      url: `https://matic-mumbai.chainstacklabs.com`,
+      accounts: [process.env.PRIVATE_KEY]
     }
   }
 };
