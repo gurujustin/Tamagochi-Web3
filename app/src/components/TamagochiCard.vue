@@ -5,9 +5,9 @@
       :style="{ 'background-image': `url(${imageUrl})` }"
     />
     <div class="card-options">
-      <button class="card-options-feed">Feed</button>
+      <button @click="feed" class="card-options-feed">Feed</button>
       <div class="card-options-timer">
-        {{ timerr }}
+        {{ timerFormat }}
       </div>
     </div>
   </div>
@@ -15,22 +15,32 @@
 
 <script>
 export default {
-  props: ["imageUrl", "timeLeft"],
+  props: ["petId", "imageUrl", "timeLeft"],
+  emits: ["petFeed"],
   data() {
-    return { timer: 0 };
+    return {
+      timer: 0,
+    };
   },
   created() {
     this.timer = this.timeLeft;
-    setInterval(this.lowerTime, 1000);
+    setInterval(() => {
+      if (this.timer > 0) this.timer -= 1000;
+    }, 1000);
   },
   computed: {
-    timerr() {
+    timerFormat() {
       return new Date(this.timer).toISOString().slice(11, 19);
     },
   },
   methods: {
-    lowerTime() {
-      if (this.timer > 0) this.timer -= 1000;
+    async feed() {
+      try {
+        await this.$store.getters.FoodContract.feedPet(this.petId);
+        this.$emit("petFeed");
+      } catch (err) {
+        console.log(err.message);
+      }
     },
   },
 };
@@ -88,6 +98,7 @@ export default {
   align-items: center;
   color: white;
   text-shadow: 1px 1px black;
+  font-size: 1.1rem;
   justify-content: center;
   text-align: center;
   grid-area: timer;

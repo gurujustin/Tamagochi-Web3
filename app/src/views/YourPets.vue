@@ -4,6 +4,8 @@
       <tamagochi-card
         v-for="pet in pets"
         :key="pet.id"
+        @petFeed="fetchData"
+        :petId="pet.id"
         :imageUrl="pet.image"
         :timeLeft="pet.timeLeft"
         class="tamagochi-card"
@@ -29,6 +31,7 @@ export default {
   },
   methods: {
     async fetchData() {
+      this.pets = [];
       this.loading = true;
       try {
         const _petsIDs = await this.$store.getters.PetContract.petsOf(
