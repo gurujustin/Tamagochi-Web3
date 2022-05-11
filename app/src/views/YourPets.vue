@@ -33,6 +33,7 @@ export default {
         this.pets = await this.$store.getters.PetContract.petsOf(
           this.$store.getters.userAddress
         );
+        console.log(this.pets);
       } catch (err) {
         console.log(err.message);
       } finally {

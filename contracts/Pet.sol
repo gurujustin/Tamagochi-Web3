@@ -35,6 +35,7 @@ contract Pet is ERC721URIStorage {
         uint256 tokenId = _tokenIds.current();
         _safeMint(_msgSender(), tokenId);
         _setTokenURI(tokenId, _tokenURI);
+        _petsOf[_msgSender()].push(tokenId);
         starve[tokenId] = block.timestamp + 4 hours;
     }
 
