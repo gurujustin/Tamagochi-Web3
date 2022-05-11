@@ -15,6 +15,7 @@ contract Market is Context {
     }
 
     function purchaseFood() external payable {
+        require(msg.value > 0);
         token.mint(_msgSender(), ethToFood(msg.value));
     }
 
