@@ -10,9 +10,9 @@ contract Pet is ERC721URIStorage {
     Counters.Counter private _tokenIds;
 
     Food public food;
-    
+
     mapping(uint256 => uint256) public starve;
-    mapping(address => uint256[]) public petsOf;
+    mapping(address => uint256[]) private _petsOf;
 
     modifier onlyToken() {
         require(
@@ -24,6 +24,10 @@ contract Pet is ERC721URIStorage {
 
     constructor(Food _food) ERC721("Pet", "PET") {
         food = _food;
+    }
+
+    function petsOf(address _owner) public view returns(uint256[] memory) {
+        return _petsOf[_owner];
     }
 
     function mint(string memory _tokenURI) external {

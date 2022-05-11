@@ -24,7 +24,7 @@ export default {
     };
   },
   async created() {
-    await this.fetchData();
+    if (this.$store.getters.PetContract) await this.fetchData();
   },
   methods: {
     async fetchData() {

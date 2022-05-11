@@ -64,7 +64,6 @@
 
 <script>
 import UserAddress from "./UserAddress.vue";
-// import { ethers } from "ethers";
 
 export default {
   components: { UserAddress },
