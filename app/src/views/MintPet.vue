@@ -3,7 +3,7 @@
     <form class="form" @submit="mintPet">
       <label class="form-label" for="amount"
         >Image of your
-        <span @click="etherscanFOOD" class="FOOD">Pet</span>:</label
+        <span @click="etherscanPet" class="FOOD">Pet</span>:</label
       >
       <div @click="pickImage" class="form-input">
         Pick
@@ -53,9 +53,10 @@ export default {
         this.loading = false;
       }
     },
-    etherscanFOOD() {
+    async etherscanPet() {
       window.open(
-        "https://ropsten.etherscan.io/address/0xf908726Eb810F12a812d1D2013C707bb73959545",
+        "https://ropsten.etherscan.io/address/" +
+          await this.$store.getters.MarketContract.pet(),
         "_blank"
       );
     },

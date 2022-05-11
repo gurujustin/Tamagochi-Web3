@@ -28,8 +28,9 @@ export default {
       e.preventDefault();
       this.loading = true;
       try {
+        console.log(ethers.utils.parseEther(String(this.amount * 0.01)).toString());
         await this.$store.getters.MarketContract.purchaseFood({
-          value: ethers.utils.parseEther(String(this.amount * 0.01)),
+          value: ethers.utils.parseEther(String(this.amount * 0.01)).toString(),
         });
       } catch (err) {
         console.log(err.message);
@@ -37,9 +38,11 @@ export default {
         this.loading = false;
       }
     },
-    etherscanFOOD() {
+    async etherscanFOOD() {
+      console.log(await this.$store.getters.MarketContract.token())
       window.open(
-        "https://ropsten.etherscan.io/address/0xf908726Eb810F12a812d1D2013C707bb73959545",
+        "https://ropsten.etherscan.io/address/" +
+          await this.$store.getters.MarketContract.token(),
         "_blank"
       );
     },
