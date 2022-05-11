@@ -4,7 +4,8 @@
       <tamagochi-card
         v-for="pet in pets"
         :key="pet.id"
-        imageUrl="https://www.mpg.de/18490336/original-1648623768.webp?t=eyJ3aWR0aCI6NzUxLCJmaWxlX2V4dGVuc2lvbiI6IndlYnAiLCJvYmpfaWQiOjE4NDkwMzM2fQ%3D%3D--42a263e13b7525fc56fa8a1a719eb3d2747272b0"
+        :imageUrl="pet.image"
+        :timeLeft="pet.timeLeft"
         class="tamagochi-card"
       />
     </div>
@@ -30,10 +31,41 @@ export default {
     async fetchData() {
       this.loading = true;
       try {
-        this.pets = await this.$store.getters.PetContract.petsOf(
+        const _petsIDs = await this.$store.getters.PetContract.petsOf(
           this.$store.getters.userAddress
         );
-        console.log(this.pets);
+        let tokenURIs = [];
+
+        for (const petId of _petsIDs) {
+          let [timeLeft, tokenURI] = await Promise.all([
+            this.$store.getters.PetContract.starve(petId),
+            this.$store.getters.PetContract.tokenURI(petId),
+          ]);
+          timeLeft = Number(timeLeft) * 1000 - new Date().getTime();
+          if (timeLeft > 0) {
+            this.pets.push({
+              id: petId,
+              timeLeft,
+            });
+            tokenURIs.push(tokenURI);
+          }
+        }
+
+        // optimized fetching
+        const fetchedTokenURIs = await Promise.all(
+          tokenURIs.map((tokenURI) => {
+            return fetch(tokenURI);
+          })
+        );
+        const parsedTokenURIs = await Promise.all(
+          fetchedTokenURIs.map((fetchedTokenURI) => {
+            return fetchedTokenURI.json();
+          })
+        );
+
+        for (let i = 0; i < parsedTokenURIs.length; i++) {
+          this.pets[i].image = parsedTokenURIs[i].properties.image;
+        }
       } catch (err) {
         console.log(err.message);
       } finally {

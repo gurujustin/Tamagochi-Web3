@@ -6,14 +6,33 @@
     />
     <div class="card-options">
       <button class="card-options-feed">Feed</button>
-      <div class="card-options-timer">03:59:59</div>
+      <div class="card-options-timer">
+        {{ timerr }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["imageUrl"],
+  props: ["imageUrl", "timeLeft"],
+  data() {
+    return { timer: 0 };
+  },
+  created() {
+    this.timer = this.timeLeft;
+    setInterval(this.lowerTime, 1000);
+  },
+  computed: {
+    timerr() {
+      return new Date(this.timer).toISOString().slice(11, 19);
+    },
+  },
+  methods: {
+    lowerTime() {
+      if (this.timer > 0) this.timer -= 1000;
+    },
+  },
 };
 </script>
 
@@ -70,6 +89,7 @@ export default {
   color: white;
   text-shadow: 1px 1px black;
   justify-content: center;
+  text-align: center;
   grid-area: timer;
 }
 </style>
