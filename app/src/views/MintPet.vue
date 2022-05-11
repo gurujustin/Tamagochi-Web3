@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="form" @submit="purchase">
+    <form class="form" @submit="mintPet">
       <label class="form-label" for="amount"
         >Image of your
         <span @click="etherscanFOOD" class="FOOD">Pet</span>:</label
@@ -13,14 +13,7 @@
       <div v-if="errorMessage" class="form-message error">
         {{ errorMessage }}
       </div>
-      <button
-        v-if="image"
-        @click="_uploadImageToIPFS"
-        class="form-button"
-        type="submit"
-      >
-        Mint
-      </button>
+      <button v-if="image" class="form-button" type="submit">Mint</button>
     </form>
     <base-loader v-if="loading" />
   </div>
@@ -36,8 +29,29 @@ export default {
     };
   },
   methods: {
-    purchase(e) {
+    async mintPet(e) {
       e.preventDefault();
+      this.loading = true;
+      const _imageUri = await this._uploadToIPFS(this.image);
+      const _tokenUri = await this._uploadToIPFS(
+        JSON.stringify({
+          title: "Asset Metadata",
+          type: "object",
+          properties: {
+            name: "",
+            description: "",
+            image: _imageUri,
+          },
+        })
+      );
+      try {
+        await this.$store.getters.PetContract.mint(_tokenUri);
+        this.$router.push("/");
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        this.loading = false;
+      }
     },
     etherscanFOOD() {
       window.open(
@@ -58,13 +72,11 @@ export default {
       this.image = uploadedFile;
       this.errorMessage = "";
     },
-    async _uploadImageToIPFS() {
-      this.loading = true;
-      const hash = (await this.$store.getters.ipfs.add(this.image)).path;
-      this.loading = false;
-      console.log("https://ipfs.io/ipfs/" + hash);
-      this.$router.push("/");
-      // ToDo: Mint real pet erc721
+    async _uploadToIPFS(data) {
+      return (
+        "https://ipfs.io/ipfs/" +
+        (await this.$store.getters.ipfs.add(data)).path
+      );
     },
   },
 };
