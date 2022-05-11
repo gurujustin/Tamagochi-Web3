@@ -6,7 +6,7 @@ import MarketData from "../contracts/Market";
 import FoodData from "../contracts/Food";
 import PetData from "../contracts/Pet";
 
-const provider = window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : null;
+export const provider = window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : null;
 
 const store = createStore({
   state: {
@@ -43,11 +43,13 @@ const store = createStore({
     PetContract: (state) => state.PetContract,
   },
   actions: {
-    async setupMetamask({ getters, commit }) {
+    async setupMetamask({ getters, commit }, checkConnection) {
       if (!window.ethereum) return;
       if (getters.userAddress?.length === 42 && getters.chainId === 3) return;
-      const connected = (await provider?.listAccounts()).length > 0;
-      if (!connected) return;
+      if (checkConnection) {
+        const connected = (await provider?.listAccounts()).length > 0;
+        if (!connected) return;
+      }
 
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();

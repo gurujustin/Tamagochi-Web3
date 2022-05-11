@@ -85,8 +85,7 @@ export default {
       this.showMobileHeader = !this.showMobileHeader;
     },
     async connectMetamask() {
-      await this.$store.getters.provider.send("eth_requestAccounts", []);
-      await this.$store.dispatch("setupMetamask");
+      await this.$store.dispatch("setupMetamask", false);
       this.$router.push("/");
     },
     redirectToMetamaskPage() {

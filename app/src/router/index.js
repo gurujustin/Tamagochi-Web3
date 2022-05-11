@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import YourPets from '../views/YourPets.vue';
 import store from '../store';
 
+let initialLoad = true;
+
 const routes = [
   {
     path: '/',
@@ -36,7 +38,10 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  await store.dispatch('setupMetamask');
+  if (initialLoad) {
+    await store.dispatch('setupMetamask', true);
+    initialLoad = false;
+  }
   if (store.getters.chainId === 3 &&
     store.getters.userAddress?.length === 42 || to.name === 'NotFound' || to.name === 'ConnectMetamask') {
     next();
