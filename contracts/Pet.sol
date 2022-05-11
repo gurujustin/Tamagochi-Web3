@@ -1,17 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./Food.sol";
 
-contract Pet is ERC721 {
+contract Pet is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+
     Food public food;
+    
     mapping(uint256 => uint256) public starve;
     mapping(address => uint256[]) public petsOf;
-    mapping(uint256 => string) private _tokenURIs;
 
     modifier onlyToken() {
         require(
@@ -29,7 +30,7 @@ contract Pet is ERC721 {
         _tokenIds.increment();
         uint256 tokenId = _tokenIds.current();
         _safeMint(_msgSender(), tokenId);
-        _tokenURIs[tokenId] = _tokenURI;
+        _setTokenURI(tokenId, _tokenURI);
         starve[tokenId] = block.timestamp + 4 hours;
     }
 
@@ -37,5 +38,4 @@ contract Pet is ERC721 {
         require(starve[tokenId] > block.timestamp, "Pet is death");
         starve[tokenId] = block.timestamp + 4 hours;
     }
-
 }
