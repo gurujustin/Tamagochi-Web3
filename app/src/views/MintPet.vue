@@ -22,7 +22,7 @@
         Mint
       </button>
     </form>
-    <the-loader v-if="loading" />
+    <base-loader v-if="loading" />
   </div>
 </template>
 
@@ -46,7 +46,7 @@ export default {
       );
     },
     pickImage() {
-      this.$refs.inputElement.dispatchEvent(new MouseEvent("click"));
+      this.$refs.inputElement.click();
     },
     imagePickedHandler({ target }) {
       const uploadedFile = target.files[0];

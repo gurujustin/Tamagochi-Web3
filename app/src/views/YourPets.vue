@@ -1,15 +1,14 @@
 <template>
-  <div class="pets">
-    <tamagochi-card
-      imageUrl="https://www.mpg.de/18490336/original-1648623768.webp?t=eyJ3aWR0aCI6NzUxLCJmaWxlX2V4dGVuc2lvbiI6IndlYnAiLCJvYmpfaWQiOjE4NDkwMzM2fQ%3D%3D--42a263e13b7525fc56fa8a1a719eb3d2747272b0"
-      class="tamagochi-card"
-    />
-    <tamagochi-card
-      imageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1tkcBVGQFXZf2SlHJY5l5dDTllQUKllrSxg&usqp=CAU"
-       class="tamagochi-card" />
-    <tamagochi-card
-      imageUrl="https://images-na.ssl-images-amazon.com/images/I/81RfjOhvMrL.png"
-       class="tamagochi-card" />
+  <div>
+    <div class="pets">
+      <tamagochi-card
+        v-for="pet in pets"
+        :key="pet.id"
+        imageUrl="https://www.mpg.de/18490336/original-1648623768.webp?t=eyJ3aWR0aCI6NzUxLCJmaWxlX2V4dGVuc2lvbiI6IndlYnAiLCJvYmpfaWQiOjE4NDkwMzM2fQ%3D%3D--42a263e13b7525fc56fa8a1a719eb3d2747272b0"
+        class="tamagochi-card"
+      />
+    </div>
+    <base-loader v-if="loading" />
   </div>
 </template>
 
@@ -18,6 +17,29 @@ import TamagochiCard from "../components/TamagochiCard.vue";
 
 export default {
   components: { TamagochiCard },
+  data() {
+    return {
+      pets: [],
+      loading: false,
+    };
+  },
+  async created() {
+    await this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      this.loading = true;
+      try {
+        this.pets = await this.$store.getters.PetContract.petsOf(
+          this.$store.getters.userAddress
+        );
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
 };
 </script>
 
