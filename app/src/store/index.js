@@ -65,8 +65,6 @@ const store = createStore({
       commit('FoodContract', FoodContract);
       commit('PetContract', PetContract);
 
-      console.log(PetContract.address);
-
       window.ethereum.on("chainChanged", async (_chainId) => {
         const id = parseInt(_chainId, 16);
         commit('chainId', id);

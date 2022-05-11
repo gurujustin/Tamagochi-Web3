@@ -1,24 +1,41 @@
 <template>
-  <form class="form" @submit="purchase">
-    <label class="form-label" for="amount"
-      >Amount of <span @click="etherscanFOOD" class="FOOD">$FOOD</span>:</label
-    >
-    <input class="form-input" type="number" v-model.number="amount" min="0" />
-    <div class="form-message">FOOD:ETH ratio = 100:1</div>
-    <button class="form-button" type="submit">Buy</button>
-  </form>
+  <div>
+    <form class="form" @submit="purchase">
+      <label class="form-label" for="amount"
+        >Amount of
+        <span @click="etherscanFOOD" class="FOOD">$FOOD</span>:</label
+      >
+      <input class="form-input" type="number" v-model.number="amount" min="0" />
+      <div class="form-message">FOOD:ETH ratio = 100:1</div>
+      <button class="form-button" type="submit">Buy</button>
+    </form>
+    <base-loader v-if="loading" />
+  </div>
 </template>
 
 <script>
+import { ethers } from "ethers";
+
 export default {
   data() {
     return {
       amount: 0,
+      loading: false,
     };
   },
   methods: {
-    purchase(e) {
+    async purchase(e) {
       e.preventDefault();
+      this.loading = true;
+      try {
+        await this.$store.getters.MarketContract.purchaseFood({
+          value: ethers.utils.parseEther(String(this.amount * 0.01)),
+        });
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        this.loading = false;
+      }
     },
     etherscanFOOD() {
       window.open(
