@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./Market.sol";
 
 contract Food is ERC20 {
-    Market public market;
+    Market public immutable market;
 
     modifier onlyMarket() {
         require(

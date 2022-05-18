@@ -6,8 +6,8 @@ import "./Food.sol";
 import "./Pet.sol";
 
 contract Market is Context {
-    Food public token;
-    Pet public pet;
+    Food public immutable token;
+    Pet public immutable pet;
 
     constructor() {
         token = new Food();

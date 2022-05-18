@@ -9,7 +9,7 @@ contract Pet is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    Food public food;
+    Food public immutable food;
 
     mapping(uint256 => uint256) public starve;
     mapping(address => uint256[]) private _petsOf;
