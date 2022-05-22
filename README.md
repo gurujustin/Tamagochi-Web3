@@ -1,15 +1,8 @@
-# Basic Sample Hardhat Project
+# NFT app
+- Mint pets (ERC721 token)
+- Feed them with FOOD (send them $FOOD /ERC20 token/)
+- If you miss feeding a pet it dies
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+Task description: https://notes.hack.bg/s/RB9aK8_6M
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+# Visit: https://tamagochi-web3.web.app/
